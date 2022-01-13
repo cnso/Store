@@ -1,5 +1,7 @@
 package edu.zhuoxun.store.test;
 
+import edu.zhuoxun.store.dao.CategoryDao;
+import edu.zhuoxun.store.dao.ProductDao;
 import edu.zhuoxun.store.dao.UserDao;
 import edu.zhuoxun.store.dbutils.DaoFactory;
 import edu.zhuoxun.store.entry.User;
@@ -23,4 +25,21 @@ public class DBTest {
         System.out.println("=============");
         dao.getAll().forEach(System.out::println);
     }
+    @Test
+    public void testCategory() {
+        CategoryDao dao = DaoFactory.createDao(CategoryDao.class);
+        dao.getAll().forEach(System.out::println);
+    }
+
+    @Test
+    public void testProduct() {
+        ProductDao dao = DaoFactory.createDao(ProductDao.class);
+//        dao.getAll().forEach(System.out::println);
+//        System.out.println(dao.getCount());
+//        dao.getPage(10, 10).forEach(System.out::println);
+        dao.getAllByCategory("1").forEach(System.out::println);
+        System.out.println(dao.getCountByCategory("1"));
+        dao.getPageByCategory("1", 10, 10).forEach(System.out::println);
+    }
+
 }

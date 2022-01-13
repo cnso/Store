@@ -3,8 +3,10 @@ package edu.zhuoxun.store.dbutils;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -44,6 +46,8 @@ public class DaoFactory {
                 if (method.getReturnType() == List.class) {
                     Type type = ((ParameterizedType) method.getGenericReturnType()).getActualTypeArguments()[0];
                     return qr.query(select.value(), new BeanListHandler<>((Class<?>) type), args);
+                } else if (method.getReturnType() == Integer.TYPE){
+                    return qr.query(select.value(), new ScalarHandler<Long>(), args).intValue();
                 } else {
                     return qr.query(select.value(), new BeanHandler<>(method.getReturnType()), args);
                 }
