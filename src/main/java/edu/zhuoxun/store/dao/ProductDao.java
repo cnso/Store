@@ -21,4 +21,9 @@ public interface ProductDao {
     int getCountByCategory(String cid);
     @Select("select * from product where cid=? limit ?, ?")
     List<Product> getPageByCategory(String cid, int offset, int size);
+    @Select("select * from product where is_hot=1 order by pdate desc limit ?")
+    List<Product> getHots(int size);
+
+    @Select("select * from product order by pdate desc limit ?")
+    List<Product> getNews(int size);
 }

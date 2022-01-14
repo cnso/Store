@@ -37,9 +37,10 @@ public class DBTest {
 //        dao.getAll().forEach(System.out::println);
 //        System.out.println(dao.getCount());
 //        dao.getPage(10, 10).forEach(System.out::println);
-        dao.getAllByCategory("1").forEach(System.out::println);
-        System.out.println(dao.getCountByCategory("1"));
-        dao.getPageByCategory("1", 10, 10).forEach(System.out::println);
+//        dao.getAllByCategory("1").forEach(System.out::println);
+//        System.out.println(dao.getCountByCategory("1"));
+//        dao.getPageByCategory("1", 10, 10).forEach(System.out::println);
+        dao.getHots(10).forEach(System.out::println);
     }
 
 }
