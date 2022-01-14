@@ -15,13 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @WebServlet(name = "CategoryServlet", value = "/store/category-servlet")
-public class CategoryServlet extends HttpServlet {
+public class CategoryServlet extends BaseServlet {
     private CategoryDao categoryDao;
-
-    @Override
-    public void init() throws ServletException {
-        categoryDao = DaoFactory.createDao(CategoryDao.class);
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

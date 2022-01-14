@@ -1,6 +1,7 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
 <html>
 
@@ -16,7 +17,6 @@
 
 		<style>
 			body {
-				margin-top: 20px;
 				margin: 0 auto;
 				width: 100%;
 			}
@@ -25,44 +25,40 @@
 				height: 300px;
 			}
 		</style>
+		<jsp:useBean id="product_page" class="edu.zhuoxun.store.entry.Page" scope="request"/>
 	</head>
 
 	<body>
-		
-		<c:if test="${empty page.list}">
+		<jsp:include page="header.jsp"/>
+		<c:if test="${empty product_page.list}">
         	<div class="row" style="width:1210px;margin:0 auto;">
         		<div class="col-md-12">
-        			<h1>暂无商品信息</h1>
+        			<h1 style="text-align: center;">暂无商品信息</h1>
         		</div>
         	</div>	
         </c:if>
         
         
-        <c:if test="${not empty page.list}">
+        <c:if test="${not empty product_page.list}">
 	        <div class="row" style="width:1210px;margin:0 auto;">
-				<div class="col-md-12">
-					<ol class="breadcrumb">
-						<li><a href="#">首页</a></li>
-					</ol>
-				</div>
-	          <c:forEach items="${page.list}" var="p">
+	          <c:forEach items="${product_page.list}" var="p">
 				<div class="col-md-2">
-					<a href="${pageContext.request.contextPath}/ProductServlet?pid=${p.pid}">
+					<a href="${pageContext.request.contextPath}/store/product-servlet?pid=${p.pid}">
 						<img src="${pageContext.request.contextPath}/${p.pimage}" width="170" height="170" style="display: inline-block;">
 					</a>
-					<p><a href="${pageContext.request.contextPath}/ProductServlet?pid=${p.pid}" style='color:green'>${p.pname}</a></p>
-					<p><font color="#FF0000">商城价：&yen;${p.shop_price}</font></p>
+					<p style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; text-align: center"><a href="${pageContext.request.contextPath}/store/product-servlet?pid=${p.pid}" style='color:green'>${p.pname}</a></p>
+					<p style="text-align: center;"><span style="color: #FF0000; ">商城价：<fmt:formatNumber type="currency" value="${ p.shop_price }"/></span></p>
 				</div>
 			  </c:forEach>
 			</div>
 			
 			<div class="paging">
 			 <ul>
-				 <li class="paging"><a href="${pageContext.request.contextPath }/ProductPageServlet?currentPage=${page.currentPage==1?1:page.currentPage-1}&pageSize=3&cid=${page.cid}">&lt;&lt;上一页</a></li>
+				 <li class="paging" style="display: inline"><a href="${pageContext.request.contextPath }/store/${product_page.cid == null ?"search-servlet":"product-page-servlet"}?currentPage=${product_page.currentPage==1?1:product_page.currentPage-1}&pageSize=3&${product_page.cid == null?"keyword":"cid"}=${product_page.cid == null? product_page.keyword : product_page.cid}">&lt;&lt;上一页</a></li>
 													
-				 <li>第${page.currentPage}页/共${page.totalPage }页</li>
+				 <li style="display: inline">第${product_page.currentPage}页/共${product_page.totalPage }页</li>
 			
-				 <li class="paging"><a href="${pageContext.request.contextPath }/ProductPageServlet?currentPage=${page.currentPage==page.totalPage?page.totalPage:page.currentPage+1}&pageSize=3&cid=${page.cid}">&lt;&lt;下一页</a></li>
+				 <li class="paging" style="display: inline"><a href="${pageContext.request.contextPath }/store/${product_page.cid == null ?"search-servlet":"product-page-servlet"}?currentPage=${product_page.currentPage==product_page.totalPage?product_page.totalPage:product_page.currentPage+1}&pageSize=3&${product_page.cid == null?"keyword":"cid"}=${product_page.cid == null? product_page.keyword : product_page.cid}">下一页&gt;&gt;</a></li>
 			</ul>
 	       </div>
         </c:if>

@@ -12,65 +12,13 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" type="text/css" />
 		<script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js" type="text/javascript"></script>
 		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
+		<jsp:useBean id="news" scope="request" type="java.util.List"/>
+		<jsp:useBean id="hots" scope="request" type="java.util.List"/>
+
 	</head>
 
 	<body>
 		<div class="container-fluid">
-
-<%--			<!----%>
-<%--            	描述：菜单栏--%>
-<%--            -->--%>
-<%--			<div class="container-fluid">--%>
-<%--				<div class="col-md-4">--%>
-<%--					--%>
-<%--				</div>--%>
-<%--				<div class="col-md-5">--%>
-<%--					<img src="${pageContext.request.contextPath}/img/header.png" />--%>
-<%--				</div>--%>
-<%--				<div class="col-md-3" style="padding-top:20px">--%>
-<%--					<ol class="list-inline">--%>
-<%--						<li><a href="${pageContext.request.contextPath}/jsp/login.jsp">登录</a></li>--%>
-<%--						<li><a href="${pageContext.request.contextPath}/jsp/register.jsp">注册</a></li>--%>
-<%--						<li><a href="${pageContext.request.contextPath}/jsp/cart.jsp">购物车</a></li>--%>
-<%--						<li><a href="${pageContext.request.contextPath}/FindOrderServlet?currentPage=1&pageSize=2">我的订单</a></li>--%>
-<%--					</ol>--%>
-<%--				</div>--%>
-<%--			</div>--%>
-<%--			<!----%>
-<%--            	描述：导航条--%>
-<%--            -->--%>
-<%--			<div class="container-fluid">--%>
-<%--				<nav class="navbar navbar-inverse">--%>
-<%--					<div class="container-fluid">--%>
-<%--						<!-- Brand and toggle get grouped for better mobile display -->--%>
-<%--						<div class="navbar-header">--%>
-<%--							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">--%>
-<%--								<span class="sr-only">Toggle navigation</span>--%>
-<%--								<span class="icon-bar"></span>--%>
-<%--								<span class="icon-bar"></span>--%>
-<%--								<span class="icon-bar"></span>--%>
-<%--							</button>--%>
-<%--							<a class="navbar-brand" href="#">首页</a>--%>
-<%--						</div>--%>
-
-<%--						<!-- Collect the nav links, forms, and other content for toggling -->--%>
-<%--						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">--%>
-<%--							<ul class="nav navbar-nav" id="myUL">--%>
-<%--								--%>
-<%--							</ul>--%>
-<%--							<form class="navbar-form navbar-right" role="search">--%>
-<%--								<div class="form-group">--%>
-<%--									<input type="text" class="form-control" placeholder="Search">--%>
-<%--								</div>--%>
-<%--								<button type="submit" class="btn btn-default">Submit</button>--%>
-<%--							</form>--%>
-
-<%--						</div>--%>
-<%--						<!-- /.navbar-collapse -->--%>
-<%--					</div>--%>
-<%--					<!-- /.container-fluid -->--%>
-<%--				</nav>--%>
-<%--			</div>--%>
 
 			<jsp:include page="header.jsp"/>
 			<!--
@@ -127,20 +75,20 @@
 					<h2>热门商品&nbsp;&nbsp;<img src="${pageContext.request.contextPath}/img/title2.jpg"/></h2>
 				</div>
 				<div class="col-md-2" style="border:1px solid #E7E7E7;border-right:0;padding:0;">
-					<img src="products/hao/big01.jpg" width="205" height="404" style="display: inline-block;"/>
+					<img src="/products/hao/big01.jpg" width="205" height="404" style="display: inline-block;"/>
 				</div>
 				<div class="col-md-10">
 					<div class="col-md-6" style="text-align:center;height:200px;padding:0px;">
 						<a href="product_info.htm">
-							<img src="products/hao/middle01.jpg" width="516px" height="200px" style="display: inline-block;">
+							<img src="${pageContext.request.contextPath}/products/hao/middle01.jpg" width="516px" height="200px" style="display: inline-block;">
 						</a>
 					</div>
 				    <c:forEach items="${hots}" var="pro">
 				        <div class="col-md-2" style="text-align:center;height:200px; padding:10px 0px;">
-							<a href="${pageContext.request.contextPath}/ProductServlet?pid=${pro.pid}">
+							<a href="${pageContext.request.contextPath}/store/product-servlet?pid=${pro.pid}">
 								<img src="${pageContext.request.contextPath}/${pro.pimage}" width="130" height="130" style="display: inline-block;">
 							</a>
-							<p style="width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><a href="${pageContext.request.contextPath}/ProductServlet?pid=${pro.pid}" style='color:#666'>${pro.pname}</a></p>
+							<p style="width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><a href="${pageContext.request.contextPath}/store/product-servlet?pid=${pro.pid}" style='color:#666'>${pro.pname}</a></p>
 							<p style="font-size:16px; color: #E4393C;"><fmt:formatNumber type="currency" value="${pro.shop_price}"/></p>
 					    </div>
 				    </c:forEach>
@@ -163,22 +111,21 @@
 					<h2>最新上架商品&nbsp;&nbsp;<img src="${pageContext.request.contextPath}/img/title2.jpg"/></h2>
 				</div>
 				<div class="col-md-2" style="border:1px solid #E7E7E7;border-right:0;padding:0;">
-					<img src="products/hao/big01.jpg" width="205" height="404" style="display: inline-block;"/>
+					<img src="${pageContext.request.contextPath}/products/hao/big01.jpg" width="205" height="404" style="display: inline-block;"/>
 				</div>
 				<div class="col-md-10">
-					<div class="col-md-6" style="text-align:center;height:200px;padding:0px;">
-						<a href="product_info.htm">
-							<img src="products/hao/middle01.jpg" width="516px" height="200px" style="display: inline-block;">
+					<div class="col-md-6" style="text-align:center;height:200px;padding:0;">
+						<a href="/product_info.html">
+							<img src="${pageContext.request.contextPath}/products/hao/middle01.jpg" width="516px" height="200px" style="display: inline-block;">
 						</a>
 					</div>
 				
-					<jsp:useBean id="news" scope="request" type="java.util.List"/>
 					<c:forEach items="${news}" var="pro">
 				        <div class="col-md-2" style="text-align:center;height:200px; padding:10px 0px;">
-							<a href="${pageContext.request.contextPath}/ProductServlet?pid=${pro.pid}">
+							<a href="${pageContext.request.contextPath}/store/product-servlet?pid=${pro.pid}">
 								<img src="${pageContext.request.contextPath}/${pro.pimage}" width="130" height="130" style="display: inline-block;">
 							</a>
-							<p style="width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><a href="${pageContext.request.contextPath}/ProductServlet?pid=${pro.pid}" style='color:#666;'>${pro.pname}</a></p>
+							<p style="width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><a href="${pageContext.request.contextPath}/store/product-servlet?pid=${pro.pid}" style='color:#666;'>${pro.pname}</a></p>
 							<p style="font-size:16px; color: #E4393C;"><fmt:formatNumber type="currency" value="${pro.shop_price}"/></p>
 					    </div>
 				    </c:forEach>					

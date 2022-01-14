@@ -13,13 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet(name = "index-servlet", value = "/index-servlet")
-public class IndexServlet extends HttpServlet {
+public class IndexServlet extends BaseServlet {
     private ProductDao productDao;
-
-    @Override
-    public void init() throws ServletException {
-        productDao = DaoFactory.createDao(ProductDao.class);
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
