@@ -5,7 +5,10 @@ import edu.zhuoxun.store.dao.ProductDao;
 import edu.zhuoxun.store.dao.UserDao;
 import edu.zhuoxun.store.dbutils.DaoFactory;
 import edu.zhuoxun.store.entry.User;
+import edu.zhuoxun.store.utils.StringUtils;
 import org.junit.jupiter.api.Test;
+
+import java.util.Date;
 
 /**
  * Created by Jash
@@ -20,10 +23,12 @@ public class DBTest {
 //            e.printStackTrace();
 //        }
         UserDao dao = DaoFactory.createDao(UserDao.class);
-        User ccc = dao.getUserByUsername("ccc");
-        System.out.println(ccc);
-        System.out.println("=============");
-        dao.getAll().forEach(System.out::println);
+//        User ccc = dao.getUserByUsername("ccc");
+//        System.out.println(ccc);
+//        System.out.println("=============");
+//        dao.getAll().forEach(System.out::println);
+        User user = new User(StringUtils.generateUUID(), "testuser", "123456", "测试用户", "1@2233.net", "", new Date(), "男");
+        dao.insertUser(user);
     }
     @Test
     public void testCategory() {

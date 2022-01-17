@@ -3,6 +3,7 @@ package edu.zhuoxun.store.utils;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 /**
  * Created by Jash
@@ -22,5 +23,8 @@ public class StringUtils {
             e.printStackTrace();
         }
         return result;
+    }
+    public static String generateUUID(){
+        return UUID.randomUUID().toString().replace("-", "");
     }
 }

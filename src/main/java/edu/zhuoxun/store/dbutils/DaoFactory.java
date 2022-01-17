@@ -6,13 +6,17 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.lang.reflect.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 /**
  * Created by Jash
@@ -51,6 +55,22 @@ public class DaoFactory {
                 } else {
                     return qr.query(select.value(), new BeanHandler<>(method.getReturnType()), args);
                 }
+            }
+            Insert insert = method.getAnnotation(Insert.class);
+            if (insert != null) {
+                Class<?> parameter = method.getParameterTypes()[0];
+                Field[] fields = parameter.getDeclaredFields();
+                String names = Arrays.stream(fields).map(Field::getName).collect(Collectors.joining(", "));
+                Object[] objects = Arrays.stream(fields).map(field -> {
+                    field.setAccessible(true);
+                    try {
+                        return field.get(args[0]);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }).toArray();
+                qr.insert(String.format(insert.value(), names), new MapHandler(), objects);
             }
             return null;
         }
