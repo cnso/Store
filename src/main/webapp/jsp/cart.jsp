@@ -1,6 +1,7 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
 <html>
 
@@ -15,7 +16,6 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
 		<style>
 			body {
-				margin-top: 20px;
 				margin: 0 auto;
 			}
 			
@@ -36,76 +36,19 @@
 				padding: 0 10px;
 			}
 		</style>
+		<jsp:useBean id="cart" class="edu.zhuoxun.store.entry.Cart" scope="session"/>
 	</head>
 
 	<body>
 
 		
-			<!--
-            	描述：菜单栏
-            -->
-			<div class="container-fluid">
-				<div class="col-md-4">
-					
-				</div>
-				<div class="col-md-5">
-					<img src="${pageContext.request.contextPath}/img/header.png" />
-				</div>
-				<div class="col-md-3" style="padding-top:20px">
-					<ol class="list-inline">
-						<li><a href="${pageContext.request.contextPath}/jsp/login.jsp">登录</a></li>
-						<li><a href="${pageContext.request.contextPath}/jsp/register.jsp">注册</a></li>
-						<li><a href="${pageContext.request.contextPath}/jsp/cart.jsp">购物车</a></li>
-						<li><a href="${pageContext.request.contextPath}/jsp/order_list.jsp">我的订单</a></li>
-					</ol>
-				</div>
-			</div>
-			<!--
-            	描述：导航条
-            -->
-			<div class="container-fluid">
-				<nav class="navbar navbar-inverse">
-					<div class="container-fluid">
-						<!-- Brand and toggle get grouped for better mobile display -->
-						<div class="navbar-header">
-							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-								<span class="sr-only">Toggle navigation</span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-							</button>
-							<a class="navbar-brand" href="#">首页</a>
-						</div>
-
-						<!-- Collect the nav links, forms, and other content for toggling -->
-						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-							<ul class="nav navbar-nav">
-								<li class="active"><a href="#">手机数码<span class="sr-only">(current)</span></a></li>
-								<li><a href="#">电脑办公</a></li>
-								<li><a href="#">电脑办公</a></li>
-								<li><a href="#">电脑办公</a></li>
-							</ul>
-							<form class="navbar-form navbar-right" role="search">
-								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Search">
-								</div>
-								<button type="submit" class="btn btn-default">Submit</button>
-							</form>
-
-						</div>
-						<!-- /.navbar-collapse -->
-					</div>
-					<!-- /.container-fluid -->
-				</nav>
-			</div>
-
-
+		<jsp:include page="header.jsp"/>
 		<div class="container">
 		    <c:if test="${not empty cart.cartItems }">
 			<div class="row">
             
-				<div style="margin:0 auto; margin-top:10px;width:950px;">
-					<strong style="font-size:16px;margin:5px 0;">订单详情</strong>
+				<div style="margin: 10px auto 0;width:950px;">
+					<strong style="font-size:16px;margin:5px 0;">购物车详情</strong>
 					<table class="table table-bordered">
 						<tbody>
 							<tr class="warning">
@@ -118,7 +61,7 @@
 							</tr>
 						<c:forEach items="${cart.cartItems}" var="item">	
 							<tr class="active">
-								<td width="60" width="40%">
+								<td width="40%">
 									<input type="hidden" name="id" value="22">
 									<img src="${pageContext.request.contextPath}/${item.product.pimage}" width="70" height="60">
 								</td>
@@ -126,16 +69,18 @@
 									<a target="_blank"> ${item.product.pname}</a>
 								</td>
 								<td width="20%">
-									￥${item.product.shop_price}
+									<fmt:formatNumber type="currency" value="${item.product.shop_price}"/>
 								</td>
 								<td width="10%">
-									<input type="text" name="quantity" value="${item.num}" maxlength="4" size="10">
+									<label>
+										<input type="text" name="quantity" value="${item.num}" maxlength="4" size="10">
+									</label>
 								</td>
 								<td width="15%">
-									<span class="subtotal">￥${item.subTotal}</span>
+									<span class="subtotal"><fmt:formatNumber type="currency" value="${item.subTotal}"/></span>
 								</td>
 								<td>
-									<a href="javascript:;" id="${item.product.pid}" class="delete">删除</a>
+									<a href="javascript:void(0)" id="${item.product.pid}" class="delete">删除</a>
 								</td>
 							</tr>
 						</c:forEach>
@@ -146,13 +91,11 @@
 
 			<div style="margin-right:130px;">
 				<div style="text-align:right;">
-					<em style="color:#ff6600;">
-				登录后确认是否享有优惠&nbsp;&nbsp;
-			</em> 赠送积分: <em style="color:#ff6600;">${cart.total}</em>&nbsp; 商品金额: <strong style="color:#ff6600;">￥${cart.total}元</strong>
+					赠送积分: <em style="color:#ff6600;"><fmt:formatNumber type="number" maxFractionDigits="0" value="${cart.total}"/></em>&nbsp; 商品金额: <strong style="color:#ff6600;"><fmt:formatNumber type="currency" value="${cart.total}"/></strong>
 				</div>
 				<div style="text-align:right;margin-top:10px;margin-bottom:10px;">
-					<a href="${pageContext.request.contextPath}/ClearCartServlet" id="clear" class="clear">清空购物车</a>
-					<a href="${pageContext.request.contextPath}/SaveOrderServlet">
+					<a href="${pageContext.request.contextPath}/clear-cart-servlet" id="clear" class="clear">清空购物车</a>
+					<a href="${pageContext.request.contextPath}/save-order-servlet">
 						<%--提交表单 --%>
 						<input type="submit" width="100" value="提交订单" name="submit" border="0" style="background: url('${pageContext.request.contextPath}/img/register.gif') no-repeat scroll 0 0 rgba(0, 0, 0, 0);
 						height:35px;width:100px;color:white;">
@@ -190,8 +133,8 @@
 		$(".delete").click(function(){
 			if(confirm("确认删除?")){
 				//获取到被删除商品pid
-				var pid=this.id;
-				window.location.href="/Store/DelFromCartServlet?id="+pid;
+				let pid = this.id;
+				window.location.href="/store/del-from-cart-servlet?id="+pid;
 			}
 		});
 	});

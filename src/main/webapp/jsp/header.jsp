@@ -5,6 +5,7 @@
 
 	<head>
 		<jsp:useBean id="loginUser" class="edu.zhuoxun.store.entry.User"  scope="session"/>
+		<jsp:useBean id="cart" class="edu.zhuoxun.store.entry.Cart"  scope="session"/>
 		<title></title>
 	</head>
 
@@ -16,10 +17,10 @@
 				<div class="col-md-4">
 					
 				</div>
-				<div class="col-md-5">
+				<div class="col-md-4">
 					<img src="${pageContext.request.contextPath}/img/header.png"  alt="header"/>
 				</div>
-				<div class="col-md-3" style="padding-top:20px">
+				<div class="col-md-4" style="padding-top:20px">
 					<ol class="list-inline">
 					
 					  <c:if test="${empty loginUser.uid}">
@@ -30,8 +31,12 @@
 					  <c:if test="${not empty loginUser.uid}">
 						<li>欢迎${loginUser.name}</li>
 						<li><a href="${pageContext.request.contextPath}/logout-servlet">退出</a></li>
-						<li><a href="${pageContext.request.contextPath}/jsp/cart.jsp">购物车</a></li>
-						<li><a href="${pageContext.request.contextPath}/jsp/order_list.jsp">我的订单</a></li>
+						<li><a href="${pageContext.request.contextPath}/jsp/cart.jsp">购物车
+							<c:if test="${not empty cart.cartItems}">
+								(<c:out value="${cart.cartItems.size()}"/>)
+							</c:if>
+						</a></li>
+						<li><a href="${pageContext.request.contextPath}/find-order-servlet?currentPage=1&pageSize=2">我的订单</a></li>
 					  </c:if>	
 						
 					</ol>

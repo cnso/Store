@@ -15,7 +15,6 @@
 
 		<style>
 			body {
-				margin-top: 20px;
 				margin: 0 auto;
 			}
 			
@@ -33,7 +32,7 @@
 		<div class="container">
 			<div class="row">
 
-				<div style="margin:0 auto; margin-top:10px;width:950px;">
+				<div style="margin: 10px auto 0;width:950px;">
 					<strong>我的订单</strong>
 					<table class="table table-bordered">
 					<c:forEach items="${page.list}" var="o">	
@@ -61,7 +60,7 @@
 							</tr>
 						<c:forEach items="${o.list}" var="item">	
 							<tr class="active">
-								<td width="60" width="40%">
+								<td width="40%">
 									<input type="hidden" name="id" value="22">
 									<img src="${pageContext.request.contextPath}/${item.product.pimage}" width="70" height="60">
 								</td>
@@ -82,12 +81,12 @@
 						</tbody>
 					  </c:forEach>	
 				  <div class="paging">
-			     <ul>
-				 <li class="paging"><a href="${pageContext.request.contextPath }/FindOrderServlet?currentPage=${page.currentPage==1?1:page.currentPage-1}&pageSize=2">&lt;&lt;上一页</a></li>
+			     <ul class="list-inline">
+				 <li class="paging"><a href="${pageContext.request.contextPath }/find-order-servlet?currentPage=${page.currentPage==1?1:page.currentPage-1}&pageSize=2">&lt;&lt;上一页</a></li>
 													
 				 <li>第${page.currentPage}页/共${page.totalPage }页</li>
 			
-				 <li class="paging"><a href="${pageContext.request.contextPath }/FindOrderServlet?currentPage=${page.currentPage==page.totalPage?page.totalPage:page.currentPage+1}&pageSize=2">&lt;&lt;下一页</a></li>
+				 <li class="paging"><a href="${pageContext.request.contextPath }/find-order-servlet?currentPage=${page.currentPage==page.totalPage?page.totalPage:page.currentPage+1}&pageSize=2">下一页&gt;&gt;</a></li>
 			     </ul>
 	             </div>
 					</table>

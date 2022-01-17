@@ -59,9 +59,10 @@ public class DaoFactory {
             Insert insert = method.getAnnotation(Insert.class);
             if (insert != null) {
                 Class<?> parameter = method.getParameterTypes()[0];
-                Field[] fields = parameter.getDeclaredFields();
-                String names = Arrays.stream(fields).map(Field::getName).collect(Collectors.joining(", "));
-                Object[] objects = Arrays.stream(fields).map(field -> {
+                List<Field> fields = Arrays.stream(parameter.getDeclaredFields())
+                        .filter(field -> field.getAnnotation(NoData.class) == null).collect(Collectors.toList());
+                String names = fields.stream().map(Field::getName).collect(Collectors.joining(", "));
+                Object[] objects = fields.stream().map(field -> {
                     field.setAccessible(true);
                     try {
                         return field.get(args[0]);
