@@ -1,6 +1,7 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!doctype html>
 <html>
 
@@ -15,7 +16,6 @@
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css" type="text/css"/>
 		<style>
 			body {
-				margin-top: 20px;
 				margin: 0 auto;
 			}
 			
@@ -24,72 +24,15 @@
 				height: 300px;
 			}
 		</style>
+		<jsp:useBean id="order" type="edu.zhuoxun.store.entry.Order" scope="request"/>
+		<jsp:useBean id="loginUser" type="edu.zhuoxun.store.entry.User" scope="session"/>
 	</head>
 
 	<body>
-
-	
-			<!--
-            	描述：菜单栏
-            -->
-			<div class="container-fluid">
-				<div class="col-md-4">
-					
-				</div>
-				<div class="col-md-5">
-					<img src="${pageContext.request.contextPath}/img/header.png" />
-				</div>
-				<div class="col-md-3" style="padding-top:20px">
-					<ol class="list-inline">
-						<li><a href="${pageContext.request.contextPath}/jsp/login.jsp">登录</a></li>
-						<li><a href="${pageContext.request.contextPath}/jsp/register.jsp">注册</a></li>
-						<li><a href="${pageContext.request.contextPath}/jsp/cart.jsp">购物车</a></li>
-						<li><a href="${pageContext.request.contextPath}/jsp/order_list.jsp">我的订单</a></li>
-					</ol>
-				</div>
-			</div>
-			<!--
-            	描述：导航条
-            -->
-			<div class="container-fluid">
-				<nav class="navbar navbar-inverse">
-					<div class="container-fluid">
-						<!-- Brand and toggle get grouped for better mobile display -->
-						<div class="navbar-header">
-							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-								<span class="sr-only">Toggle navigation</span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-							</button>
-							<a class="navbar-brand" href="#">首页</a>
-						</div>
-
-						<!-- Collect the nav links, forms, and other content for toggling -->
-						<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-							<ul class="nav navbar-nav">
-								<li class="active"><a href="#">手机数码<span class="sr-only">(current)</span></a></li>
-								<li><a href="#">电脑办公</a></li>
-								<li><a href="#">电脑办公</a></li>
-								<li><a href="#">电脑办公</a></li>
-							</ul>
-							<form class="navbar-form navbar-right" role="search">
-								<div class="form-group">
-									<input type="text" class="form-control" placeholder="Search">
-								</div>
-								<button type="submit" class="btn btn-default">Submit</button>
-							</form>
-
-						</div>
-						<!-- /.navbar-collapse -->
-					</div>
-					<!-- /.container-fluid -->
-				</nav>
-			</div>
-
+		<jsp:include page="header.jsp"/>
 
 		<div class="container">
-		 <form id="orderForm" method="post" action="${pageContext.request.contextPath}/PayServlet">
+		 <form id="orderForm" method="post" action="${pageContext.request.contextPath}/pay-servlet">
 			<div class="row">
 
 				<div style="margin:0 auto;margin-top:10px;width:950px;">
@@ -116,13 +59,13 @@
 									<a target="_blank">${item.product.pname }</a>
 								</td>
 								<td width="20%">
-									${item.product.shop_price }
+									<fmt:formatNumber type="currency" value="${item.product.shop_price}"/>
 								</td>
 								<td width="10%">
 									${item.quantity }
 								</td>
 								<td width="15%">
-									<span class="subtotal">￥${item.total }</span>
+									<span class="subtotal"><fmt:formatNumber type="currency" value="${item.total}"/></span>
 								</td>
 							</tr>
 						</c:forEach>
@@ -131,7 +74,7 @@
 				</div>
 
 				<div style="text-align:right;margin-right:120px;">
-					商品金额: <strong style="color:#ff6600;">￥${money}元</strong>
+					商品金额: <strong style="color:#ff6600;"><fmt:formatNumber type="currency" value="${order.total}"/>元</strong>
 				</div>
 
 			</div>
@@ -140,21 +83,21 @@
 				<hr/>
 				
 					<div class="form-group">
-						<label for="username" class="col-sm-1 control-label">地址</label>
+						<label for="address" class="col-sm-1 control-label">地址</label>
 						<div class="col-sm-5">
-							<input type="text" class="form-control" id="username" placeholder="请输入收货地址">
+							<input type="text" class="form-control" id="address" name="address" placeholder="请输入收货地址" value="${order.address}">
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="inputPassword3" class="col-sm-1 control-label">收货人</label>
+						<label for="name" class="col-sm-1 control-label">收货人</label>
 						<div class="col-sm-5">
-							<input type="password" class="form-control" id="inputPassword3" placeholder="请输收货人">
+							<input type="text" class="form-control" id="name" name="name" placeholder="请输收货人" value="${order.name == null?loginUser.name:order.name}">
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="confirmpwd" class="col-sm-1 control-label">电话</label>
+						<label for="telephone" class="col-sm-1 control-label">电话</label>
 						<div class="col-sm-5">
-							<input type="password" class="form-control" id="confirmpwd" placeholder="请输入联系方式">
+							<input type="text" class="form-control" id="telephone" name="telephone" placeholder="请输入联系方式" value="${order.telephone == null ? loginUser.telephone : order.telephone}">
 							<input type="hidden" name="oid" value="${order.oid}"/>
 						</div>
 					</div>

@@ -1,12 +1,13 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>   
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!doctype html>
 <html>
 
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>会员登录</title>
+		<title>我的订单</title>
 		<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" type="text/css" />
 		<script src="${pageContext.request.contextPath}/js/jquery-1.11.3.min.js" type="text/javascript"></script>
 		<script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
@@ -23,6 +24,7 @@
 				height: 300px;
 			}
 		</style>
+		<jsp:useBean id="orderPage" type="edu.zhuoxun.store.entry.Page" scope="request"/>
 	</head>
 
 	<body>
@@ -35,14 +37,14 @@
 				<div style="margin: 10px auto 0;width:950px;">
 					<strong>我的订单</strong>
 					<table class="table table-bordered">
-					<c:forEach items="${page.list}" var="o">	
+					<c:forEach items="${orderPage.list}" var="o">
 						<tbody>
 							<tr class="success">
 								<th colspan="5">
 									订单编号:${o.oid}
-									总金额:¥${o.total}元
+									总金额:<fmt:formatNumber type="currency" value="${o.total}"/> 元
 									<c:if test="${o.state==1}">
-										<a href="${pageContext.request.contextPath}/OrderServlet?method=findOrderByOid&oid=${o.oid}">付款</a>
+										<a href="${pageContext.request.contextPath}/order-servlet?oid=${o.oid}">付款</a>
 									</c:if>	 
 									<c:if test="${o.state==2}">未发货</c:if>
 									<c:if test="${o.state==3}">
@@ -68,13 +70,13 @@
 									<a target="_blank">${item.product.pname}</a>
 								</td>
 								<td width="20%">
-									￥${item.product.shop_price}
+									<fmt:formatNumber type="currency" value="${item.product.shop_price}"/>
 								</td>
 								<td width="10%">
 									${item.quantity}
 								</td>
 								<td width="15%">
-									<span class="subtotal">￥${item.total}</span>
+									<span class="subtotal"><fmt:formatNumber type="currency" value="${item.total}"/></span>
 								</td>
 							</tr>
 						  </c:forEach>
@@ -82,11 +84,11 @@
 					  </c:forEach>	
 				  <div class="paging">
 			     <ul class="list-inline">
-				 <li class="paging"><a href="${pageContext.request.contextPath }/find-order-servlet?currentPage=${page.currentPage==1?1:page.currentPage-1}&pageSize=2">&lt;&lt;上一页</a></li>
+				 <li class="paging"><a href="${pageContext.request.contextPath }/find-order-servlet?currentPage=${orderPage.currentPage==1?1:orderPage.currentPage-1}&pageSize=2">&lt;&lt;上一页</a></li>
 													
-				 <li>第${page.currentPage}页/共${page.totalPage }页</li>
+				 <li>第${orderPage.currentPage}页/共${orderPage.totalPage }页</li>
 			
-				 <li class="paging"><a href="${pageContext.request.contextPath }/find-order-servlet?currentPage=${page.currentPage==page.totalPage?page.totalPage:page.currentPage+1}&pageSize=2">下一页&gt;&gt;</a></li>
+				 <li class="paging"><a href="${pageContext.request.contextPath }/find-order-servlet?currentPage=${orderPage.currentPage==orderPage.totalPage?orderPage.totalPage:orderPage.currentPage+1}&pageSize=2">下一页&gt;&gt;</a></li>
 			     </ul>
 	             </div>
 					</table>

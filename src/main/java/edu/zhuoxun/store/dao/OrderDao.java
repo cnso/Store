@@ -2,6 +2,7 @@ package edu.zhuoxun.store.dao;
 
 import edu.zhuoxun.store.dbutils.Insert;
 import edu.zhuoxun.store.dbutils.Select;
+import edu.zhuoxun.store.dbutils.Update;
 import edu.zhuoxun.store.entry.Order;
 import edu.zhuoxun.store.entry.OrderItem;
 
@@ -25,4 +26,10 @@ public interface OrderDao {
 
     @Select("select * from orderitem where oid=?")
     List<OrderItem> findOrderItemByOid(String oid);
+
+    @Select("select * from orders where oid=?")
+    Order getOrderByOid(String oid);
+
+    @Update("update orders set state=?, name=?, telephone=?, address=? where oid=?")
+    int updateOrder(int state, String name, String telephone, String address, String oid);
 }

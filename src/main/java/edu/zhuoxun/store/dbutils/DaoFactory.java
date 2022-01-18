@@ -73,6 +73,10 @@ public class DaoFactory {
                 }).toArray();
                 qr.insert(String.format(insert.value(), names), new MapHandler(), objects);
             }
+            Update update = method.getAnnotation(Update.class);
+            if (update != null) {
+                return qr.update(update.value(), args);
+            }
             return null;
         }
     }

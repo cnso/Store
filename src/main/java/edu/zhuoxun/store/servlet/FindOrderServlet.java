@@ -34,7 +34,7 @@ public class FindOrderServlet extends BaseServlet {
                 order.getList().forEach(item -> item.setProduct(productDao.getProductById(item.getPid())));
             });
         }
-        request.setAttribute("page", page);
+        request.setAttribute("orderPage", page);
         request.getRequestDispatcher("/jsp/order_list.jsp").forward(request, response);
     }
 
